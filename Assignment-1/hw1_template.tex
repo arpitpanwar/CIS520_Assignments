@@ -1,0 +1,384 @@
+\documentclass[english]{article}
+
+%% Packages pull in extra commands:
+%% http://en.wikibooks.org/wiki/LaTeX/Packages
+\usepackage[latin9]{inputenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{array}
+\usepackage{tikz}
+
+% New commands serve as shorthand for frequently used command combinations.
+\newcommand{\ind}[1]{\mathbf{1}\left(#1\right)}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\E}{\mathbf{E}}
+
+\title{CIS 520, Machine Learning, Fall 2015: Assignment 1}
+\author{Arpit Panwar}
+
+\begin{document}
+\maketitle
+{\normalsize Collaborators: \\ 
+\\ \underline{ Anusha Fernando   }} \\
+
+% Problem 1
+\section{High dimensional hi-jinx}
+
+\begin{enumerate}
+\item Intra-class distance.
+  \begin{align*}
+    \E[(X - X')^2] =&\; E[X^2 + X'^2 - 2*X*X'] \\
+    &\; Using \; \E[X + Y] = E[X] + E[Y] \; and \; \E[aX] = aE[X] \\
+    =&\; \E[X^2] + E[X'^2] + 2* E[X * X'] \\
+    &\; Replacing \; E[X^2] = \mu^2 + \sigma^2  \; and \; E[X] = E[X'] = \mu \\
+    =&\; \mu^2 + \sigma^2 + \sigma^2 + \mu^2 - 2 * \mu^2 \\
+    =&\; 2*\mu^2 + 2*\sigma^2 - 2*\mu^2  \\
+    =&\; 2*\sigma^2
+  \end{align*}
+
+\item Inter-class distance.
+  \begin{align*}
+    \E[(X - X')^2] =&\; E[X^2 + X'^2 - 2*X*X'] \\
+    &\; Using \; \E[X + Y] = E[X] + E[Y] \; and \; \E[aX] = aE[X] \\
+    =&\; \E[X^2] + E[X'^2] + 2* E[X * X'] \\
+    &\; Replacing \; E[X^2] = \mu_1^2 + \sigma^2  \; , E[X'^2] = \mu_2^2 + \sigma^2,\; E[X] = \mu_1 \; E[X'] = \mu_2 \;  \\
+    =&\; \mu_1^2 + \sigma^2 + \sigma^2 + \mu_2^2 - 2 * \mu_1 * \mu_2 \\
+    =&\; 2*\sigma^2 + (\mu_1 - \mu_2)^2 \\
+  \end{align*}
+
+\item Intra-class distance, m-dimensions.
+  \begin{align*}
+    \E[\sum_{j=1}^m (X_{j} - X'_{j})^2] =&\;  \E[\sum_{j=1}^m  (X_{j}^{2} + {X'_{j}}^ {2}  - 2*X*X')]  \\
+    &\; Using \; \E[\sum_{j=1}^m X] = \sum_{j=1}^m E[X] \\
+    =&\; \sum_{j=1}^m \E[X_j^2] +  \sum_{j=1}^m \E[{X'_{j}}^2] -  \sum_{j=1}^m 2 * \E[X_j] * \E[X'_j] \\
+    &\;  Replacing \; E[X_j^2] = \mu_j^2 + \sigma^2  \; and \; E[X_j] = E[X'_j] = \mu_j \\  
+   =&\; \sum_{j=1}^m (\mu_j^2 + \sigma^2 + \mu_j^2 + \sigma^2 - 2 * \mu_j * \mu_j) \\
+   =&\; \sum_{j=1}^m (2* \sigma^2) \\
+   =&\; 2*m*\sigma^2
+  \end{align*}
+
+\item Inter-class distance, m-dimensions.
+  \begin{align*}
+     \E[\sum_{j=1}^m (X_{j} - X'_{j})^2] =&\;  \E[\sum_{j=1}^m  (X_{j}^{2} + {X'_{j}}^ {2}  - 2*X*X')]  \\
+    &\; Using \; \E[\sum_{j=1}^m X] = \sum_{j=1}^m E[X] \\
+    =&\; \sum_{j=1}^m \E[X_j^2] +  \sum_{j=1}^m \E[{X'_{j}}^2] -  \sum_{j=1}^m 2 * \E[X_j] * \E[X'_j] \\
+    &\; Replacing \; E[X_j^2] = \mu_1^2 + \sigma^2  \; , E[{X'_{j}}^2] = \mu_2^2 + \sigma^2,\; E[X_j] = \mu_1 \; E[{X'_{j}}] = \mu_2 \;  \\ 
+   =&\; \sum_{j=1}^m (\mu_1^2 + \sigma^2 + \mu_2^2 + \sigma^2 - 2 * \mu_1 * \mu_2) \\ 
+   =&\; \sum_{j=1}^m ( 2 * \sigma^2 + (\mu_1 - \mu_2)^2) \\
+   =&\; \sum_{j=1}^m (2 * \sigma^2) + \sum_{j=1}^m (\mu_1 - \mu_2)^2 \\
+   =&\; 2 * m * \sigma^2 + \sum_{j=1}^m (\mu_1 - \mu_2)^2 \\
+  \end{align*}
+
+\item The ratio of expected intra-class distance to inter-class  distance is: $\dfrac{2*m*\sigma^2}{2*m*\sigma^2 + (\mu_1 - \mu_2)^2} $.  \\
+  As $m$ increases towards $\infty$, this ratio approaches 
+\begin{align*}
+   &\; \lim_{m \to \infty} \dfrac{2*m*\sigma^2}{2*m*\sigma^2 + (\mu_1 - \mu_2)^2} \\
+   &\; Using L'Hopital's rule \\
+   =&\; \dfrac{2*\sigma^2}{2*\sigma^2} \\
+   =&\; 1 
+\end{align*}
+\end{enumerate}
+
+% Problem 2
+\section{Fitting distributions with KL divergence}
+
+\begin{enumerate}
+\item KL divergence for Gaussians.
+  \begin{enumerate}
+  \item The KL divergence between two univariate Gaussians is given by
+    $f = \ldots$ and $g = \ldots$.
+    \begin{align*}
+      KL(p(x) || q(x)) =&\; \E_p \left[\log_e {\dfrac{p(x)}{q(x)}}\right] \\
+      =&\;  \E_p \left[ log_e{\dfrac{\frac{1}{\sqrt{2*\pi}*\sigma} * e ^ {-\dfrac{(x - \mu_1)^2}{2*\sigma^2}}}
+						{\sqrt{2*\pi} * e ^ {-\dfrac{(x - \mu_2)^2}{2}}}}\right]\\
+      =&\; \E_p \left[ log_e {\frac{1}{\sigma} * e ^ {\dfrac{(x - \mu_2)^2}{2} - \dfrac{(x - \mu_1)^2}{2*\sigma^2}}}\right] \\
+      =&\; \E_p \left[log_e{\frac{1}{\sigma}} + log_e  e ^ {\dfrac{(x - \mu_2)^2}{2} - \dfrac{(x - \mu_1)^2}{2*\sigma^2}}\right] \\
+      =&\; \E_p \left[{\dfrac{(x - \mu_2)^2}{2} - \dfrac{(x - \mu_1)^2}{2*\sigma^2}}\right] + log_e {\frac{1}{\sigma}} \\
+      =&\; \mathbf{E}_p[ f(x, \mu_1, \mu_2, \sigma)] + g(\sigma)
+    \end{align*}\\
+  \item The value $\mu_1 = \ldots$ minimizes $KL(p(x)||q(x))$.
+    \begin{align*}
+	KL(p(x)||q(x)) =&\; \int\limits_{-\infty}^{\infty} p(x) * 
+				log_e \left( \dfrac
+					  {
+					   \frac{1}
+						{
+						 \sqrt
+						   {
+							2* \pi
+						   } 
+						* \sigma
+						}
+					    * e ^ 
+						{
+						-\dfrac
+							{
+								(x - \mu_1)^2
+							}
+							{
+								2 * \sigma^2
+							}
+						}
+					} 	
+					{
+					 \frac{1}
+						{
+						   \sqrt
+							{
+							2*\pi
+							}
+						 }
+					  *  e ^ 
+						{
+						-\dfrac
+						      {
+							(x - \mu_2)^2
+						       }
+						     {
+							2
+						     }
+						}
+					}
+					 \right) \\
+=&\; \int\limits_{-\infty}^{\infty} p(x) * log_e \left( \frac{1}{\sigma} * e ^ {\dfrac{(x-\mu_2)^2}{2} - \dfrac{(x - \mu_1)^2}{2*\mu^2}} \right) \\
+&\;Expanding \;logarithm \;and \;solving \;log_e (e^x) \\
+=&\;  \int\limits_{-\infty}^{\infty} p(x) * log_e \left(\frac{1}{\sigma}\right) + \int\limits_{-\infty}^{\infty} p(x) * \dfrac{(x - \mu_2)^2}{2} - \int\limits_{-\infty}^{\infty} p(x) * \dfrac{(x - \mu_1)^2}{2 * \sigma^2} \\
+&\; We \;know \;that \int p(x) * (x - \mu)^2 = \sigma^2  \;and \; \int p(x) dx = 1. \ldots\ldots\ldots (i)\\
+ &\;Substituting \;the \;values \;in \;above \;equation  \\
+=&\; log_e \left(\frac{1}{\sigma}\right) +  \int\limits_{-\infty}^{\infty}  p(x) (x -\mu_1 + \mu_1 - \mu_2)^2 dx -  \int\limits_{-\infty}^{\infty} \frac{1}{2} dx \\
+=&\; log_e \left(\frac{1}{\sigma}\right)  + \int\limits_{-\infty}^{\infty}  p(x) \left[ ( x - \mu_1)^2 + (\mu_1 - \mu_2)^2 + 2 * (x - \mu_1) * (\mu_1 - \mu_2) \right] - \frac{1}{2} \\
+=&\; log_e \left(\frac{1}{\sigma}\right) - \frac{1}{2} + \int\limits_{-\infty}^{\infty}  p(x) * (x - \mu_1)^2 + \int\limits_{-\infty}^{\infty}  p(x) (\mu_1 - \mu_2)^2 + \int\limits_{-\infty}^{\infty}  p(x) *  2 * (x - \mu_1) * (\mu_1 - \mu_2) \\
+&\;Again \;using (i) \\
+=&\;  log_e \left(\frac{1}{\sigma}\right) - \frac{1}{2} + \sigma^2 + (\mu_1 - \mu_2)^2 + (\mu_1 - \mu_2) * \left[ \left(\int\limits_{-\infty}^{\infty}  p(x) * 2 * x \; dx\right) -  \left(\mu_1 * \int\limits_{-\infty}^{\infty}  p(x) dx\right) \right] \\
+=&\; log_e \left(\frac{1}{\sigma}\right) - \frac{1}{2} +  \sigma^2 + (\mu_1 - \mu_2)^2   + (\mu_1 - \mu_2)*0 \\
+=&\;  log_e \left(\frac{1}{\sigma}\right) - \frac{1}{2} +  \sigma^2 + (\mu_1 - \mu_2)^2 
+\end{align*}
+\begin{align*}
+  0 =&\; \frac{\partial KL(p(x) || q(x))}{\partial \mu_1} \\
+  0 =&\;  \frac{\partial}{\partial \mu_1} log_e \left(\frac{1}{\sigma}\right) - \frac{1}{2} +  \sigma^2 + (\mu_1 - \mu_2)^2 \\
+  0 =&\; 2*\mu_1 - 2*\mu_2 \\
+  \mu_1 =&\; \mu_2 \\
+ \end{align*}
+\end{enumerate}
+\item KL divergence for Multinomials.
+  \begin{enumerate}
+  \item The KL divergence between two Multinomials is: $KL(p(x) || q(x)) = \sum_i p(x) * log \left( \frac{p(x)}{q(x)}\right)$.
+\begin{align*}
+KL(p(x) || q(x)) =&\; \sum_{i\; even} p(x_i) log_e \left(\frac{p(x_i)}{q(x_i)}\right)  + \sum_{i \;odd} p(x_i) log_e \left(\frac{p(x_i)}{q(x_i)}\right)  \\
+&\; Substituting \;the \;values \\
+=&\; \sum_{i\; even} \alpha \log_e \left(\frac{\alpha}{\theta_{even}}\right)  + \sum_{i \;odd} \beta \log_e \left(\frac{\beta}{\theta_{odd}}\right) \\
+&\; Solving \; logarithms \\
+=&\; \sum_{i\; even} \alpha \log_e (\alpha) - \sum_{i\; even} \alpha \log_e (\theta{even}) + \sum_{i \;odd} \beta \log_e (\beta) - \sum_{i \;odd} \beta \log_e(\theta_{odd}) \\
+=&\; n*\alpha*\log_e(\alpha) + n*\beta*\log_e(\beta) - \sum_{i\; even} \alpha \log_e (\theta{even})  - \sum_{i \;odd} \beta \log_e(\theta_{odd}) \ldots\ldots\ldots (i)\\
+\end{align*}
+  \item The values $\alpha = \ldots$ and $\beta = \ldots$ minimize $KL(p(x)||q(x))$.
+	We are given that to find the minimum we need to add the Lagranges multiplier and set to 0.
+	We need to minimize $KL(p(x)||q(x)) + \lambda(n(\alpha + \beta) - 1)$ \\
+\begin{align*}
+	Substituting \; values \; in \; (i) \\
+	n*\alpha*\log_e(\alpha) + n*\beta*\log_e(\beta) - \sum_{i\; even} \alpha \log_e (\theta_{even})  - \sum_{i \;odd} \beta \log_e(\theta_{odd}) +  \lambda(n(\alpha + \beta) - 1) = &\; 0 \\
+    	\frac{\partial}{\partial \alpha} =  n*\log_e (\alpha) + n + n\lambda - \sum_{i\; even} \log_e (\theta_{even}) = &\; 0 \ldots\ldots\ldots (ii) \\
+    	\frac{\partial}{\partial \beta} =  n*\log_e (\beta) + n + n\lambda - \sum_{i\; odd} \log_e (\theta_{odd}) = &\; 0 \ldots\ldots\ldots (iii) \\
+   	\frac{\partial}{\partial \lambda} = n\alpha + n\beta - 1 = &\;  0 \ldots\ldots\ldots (iv) \\
+    	Adding \; (ii) \; and \; (iii) \\
+  	n\log_e(\alpha) + n\log(\beta) + 2n(\lambda+1) - \sum_{i\; odd} \log_e (\theta_{odd})  - \sum_{i\; even} \log_e (\theta_{even}) = &\; 0 \ldots\ldots\ldots (v) \\
+  	Subtracting \; (iii) \; from \; (ii) \\
+ 	n\log(\alpha) - n\log(\beta) + \sum_{i\; odd} \log_e (\theta_{odd})  - \sum_{i\; even} \log_e (\theta_{even}) = &\; 0 \ldots\ldots\ldots (vi) \\
+	Adding \; (v) \; and \;(vi) \\
+	2*n*\log(\alpha) + 2*n*(\lambda +1) = 2 * \sum_{i\; even} \log_e (\theta_{even}) \\
+	 \dfrac{\sum_{i\; even} \log_e (\theta_{even})}{n} - (\lambda + 1) =&\; \log_e(\alpha) \\
+	 e ^ {\dfrac{\sum_{i\; even} \log_e (\theta_{even})}{n} - (\lambda + 1)} =&\; \alpha  \ldots\ldots\ldots (vii)\\ 
+	Subtracting \; (vi) \; from \;(v) \\
+	2*n*\log_e{\beta} + 2*n*(\lambda +1) =&\; 2  \sum_{i\; odd} \log_e (\theta_{odd})\\
+	\dfrac{\sum_{i\; odd} \log_e (\theta_{odd})}{n} - (\lambda +1) = \log_e(\beta) \\
+	e ^ {\dfrac{\sum_{i\; odd} \log_e (\theta_{odd})}{n} - (\lambda +1)} = \beta \ldots\ldots\ldots (viii) \\
+	Substituting\;value \;of \;(vii) and \;(viii) \;in \;(iv) \\
+	 e ^ {\dfrac{\sum_{i\; even} \log_e (\theta_{even})}{n} - (\lambda + 1)} + e ^ {\dfrac{\sum_{i\; odd} \log_e (\theta_{odd})}{n} - (\lambda +1)} = \frac{1}{n} \\
+	 e ^ {\dfrac{\sum_{i\; even} \log_e (\theta_{even})}{n}} +  e ^ {\dfrac{\sum_{i\; odd} \log_e (\theta_{odd})}{n}} = \frac{e^{(\lambda+1)}}{n} \ldots\ldots\ldots (ix)\\
+	Solving\; for \;\lambda \; we\; get \\
+	\log n + \log_e\left( e ^ {\dfrac{\sum_{i\; even} \log_e (\theta_{even})}{n}} +  e ^ {\dfrac{\sum_{i\; odd} \log_e (\theta_{odd})}{n}} \right) -1 = \lambda \\
+	\pagebreak[4]
+	Substituting\; (ix) \; in \;(vii) \\
+	\dfrac{e ^ {\dfrac{\sum_{i\; even} \log_e (\theta_{even})}{n}}}{n * e ^ {\dfrac{\sum_{i\; even} \log_e (\theta_{even})}{n}} +  e ^ {\dfrac{\sum_{i\; odd} \log_e (\theta_{odd})}{n}}}  = \alpha \\
+	Substituting\; (ix) \; in \;(viii) \\
+	\dfrac{e ^ {\dfrac{\sum_{i\; odd} \log_e (\theta_{odd})}{n}}}{n * e ^ {\dfrac{\sum_{i\; even} \log_e (\theta_{even})}{n}} +  e ^ {\dfrac{\sum_{i\; odd} \log_e (\theta_{odd})}{n}}} = \beta \\
+ \end{align*}
+  \end{enumerate}
+\end{enumerate}
+
+% Problem 3
+\section{Conditional independence in probability models}
+
+\begin{enumerate} 
+\item We can write 
+   \begin{align*}
+            Using Marginalization \\
+	 p(x_i)  =&\; p(x_i | z_i=1)*p(z_i=1) + \ldots +  p(x_i | z_i=j)*p(z_i=j) + \ldots +  p(x_i | z_i=k)*p(z_i=k) \\
+	=&\;            \sum_{j=1}^k  p(x_i | z_i = j) p(z_i = j) \\
+	=&\;            \sum_{j=1}^k f_j (x_i) \pi_j     
+   \end{align*}
+
+\item The formula for $p(x_1, \dots, x_n)$ is $\ldots$ 
+  \begin{align*}
+	&\; Assuming \; all \; the \; x_i \; are \; independent \\
+    	p(x_1, \dots, x_n) =&\; p(x_1) * p(x_2) * \ldots * p(x_n) \\
+    &\; Substituting \; p(x_i) \; from \; part\; i \\
+   = &\; \sum_{j=1}^k f_j (x_1) \pi_j * \sum_{j=1}^k f_j (x_2) \pi_j * \ldots * \sum_{j=1}^k f_j (x_n) \pi_j \\
+   = &\; \prod_{i=1}^n \sum_{j=1}^k f_j (x_i) \pi_j 
+  \end{align*}
+
+\item The formula for $p(z_u = v \mid x_1, \dots, x_n)$ is $\ldots$ 
+  \begin{align*}
+    p(z_u = v \mid x_1, \dots, x_n) =&\;\dfrac {p(x_1 \ldots \mid z_u = v) * p(z_u =v)}{p(x_1,x_2 \ldots x_n )} \\
+    =&\; \dfrac{p(x_1,x_2 \ldots x_{u-1},x_{u+1} \ldots x_n) * p(x_u \mid z_u=v)  * p (z_u = v)}{p(x_1,x_2 \ldots x_n )}\\
+    =&\; \dfrac{p(x_u \mid z_u = v) * p(z_u = v)} {p(x_u)} \\
+    =&\;\dfrac{f_v(x_u) * \pi_v} {\sum_{j=1}^k f_j(x_u) * \pi_j} 
+  \end{align*}
+\end{enumerate}
+
+% Problem 4
+\section{Decision trees}
+
+\begin{enumerate}
+\item Concrete sample training data.
+  \begin{enumerate}
+  \item The sample entropy $H(Y)$ is $\ldots$.
+    \begin{align*}
+      H(Y) =&\; - \sum_y P(Y=y)\log_2 P(Y=y) \\
+      =&\; -[3/5 * log_2 (3/5)] - [2/5 * log_2 (2/5)] \\
+      =&\; 0.4422 + 0.5288 \\
+      =&\; 0.9710
+    \end{align*}
+
+  \item The information gains are $IG(X_1) = \ldots$ and $IG(X_2) = \ldots$.  
+    \begin{align*}
+      IG(X_1) =&\; H(Y) - H(Y \mid {X_1}) \\
+    	   &\; We \;already\; have \; H(Y) \; from \; part \;1 \; above. \; So \; calculating \; H(Y \mid X_1)  \\
+      H(Y\mid X_1) =&\;  H(Y \mid x_1 = T) * P (X_1 = T) +   H(Y \mid x_1 = F) * P (X_1 = F) \\
+		      =&\; - [(2/3 * \log_2(2/3) + 1/3 * \log_2(1/3)) * 9/20 ] - [(6/11 * \log_2(6/11) + (5/11) * \log_2(5/11)) * 11/20] \\
+		      =&\; -0.4132 - 0.5467 \\
+                           =&\; -0.9599 \\
+      IG(X_1)  =&\; 0.9710 - 0.9599 = 0.0111 \\
+      IG(X_2) =&\; H(Y) - H(Y \mid X_2) \\
+                   &\; We \;already\; have \;H(Y) \;from \;part \;1 \;above. \;So \;calculating \; H(Y \mid X_2)  \\
+      H(Y\mid X_2) =&\;  H(Y \mid x_2 = T) * P (X_2 = T) +   H(Y \mid x_2 = F) * P (X_2 = F) \\
+		      =&\; - [(4/5 * \log_2(4/5) + (1/5 * \log_2(1/5))) * 1/2] - [(2/5 * \log_2(2/5) + (3/5 * \log_2(3/5))) * 1/2] \\
+		      =&\; - 0.3610 - 0.4855 = -0.8465 \\
+      IG(X_2)         =&\; 0.9710 - 0.8465 = 0.1245 
+    \end{align*}
+
+  \item The decision tree that would be learned is shown in Figure
+    \ref{fig:decision_tree}.
+    %% The [H], in combination with the float package, forces latex to
+    %% generate the figure in exactly this part of the document
+    %% instead of ``floating'' it to another part.
+    \begin{figure}[H]
+      \centering
+      \tikzstyle{dir}=[->, very thick]
+      \begin{tikzpicture}[auto]
+        \node[rectangle] (root) at (0,0) {$X_2$};
+        \node (left) at (-4,-2) {$X_1 | X_2 = T$};
+        \node (right) at (4,-2) {$X_1|  X_2 = F$};
+         \node (leftleftleaf) at (-6,-4) {$ [y =+ | X_1=T , X_2 = T]$};
+        \node (leftrightleaf) at (-2,-4) {$[y = + | X_1=F , X_2 = T]$};
+	\node (rightleftleaf) at (2,-4) {$[y =- | X_1=T , X_2 = F]$};
+        \node (righttrightleaf) at (6,-4) {$[y = + | X_1=F , X_2 = F]$};
+
+        \draw[dir] (root) to [above] node {} (left);
+        \draw[dir] (root) to [above] node {} (right);
+        \draw[dir] (left) to [above] node {} (leftleftleaf);
+        \draw[dir] (left) to [above] node {} (leftrightleaf);
+       \draw[dir] (right) to [above] node {} (rightleftleaf);
+        \draw[dir] (right) to [above] node {} (righttrightleaf);
+      \end{tikzpicture}
+      \caption{The decision tree that would be learned.}
+      \label{fig:decision_tree}
+    \end{figure}
+  From left to right below is the reason for choosing the sign of y \\
+ i. y=+ : count + = 6 , count - = 1 \\
+ ii. y=+ : count + = 2 , count - = 1 \\
+iii. y=- : count + =0, count - = 2 \\
+iv. y=+ : count + =4, count -= 4  \\
+  \end{enumerate}
+
+\item Proof that $IG(x,y) = H[x] - H[x \mid y] = H[y] - H[y \mid x]$,
+  starting from the definition in terms of KL-divergence:
+  \begin{align*}
+    IG(x,y) =&\; KL\left(p(x,y)||p(x)p(y)\right) \\
+    =&\; - \sum_x \sum_y p (x,y) * \log_2 (\dfrac{p(x) * p(y)}{p(x,y)}) \\
+    =&\; \sum_x \sum_y p(x,y) * \log_2 (\dfrac {p(x,y)}{p(x) * p(y)}) \ldots\ldots (i) \\ 
+    &\; Using \;bayes \;rule \\
+    =&\; \sum_x \sum_y p(x,y) * \log_2(\dfrac{p(x|y)}{p(x)}) \\
+    &\; Splitting \;logarithm \\
+    =&\; \sum_x \sum_y p(x,y) * \log_2(p(x|y)) - \sum_x \sum_y p(x,y) * \log_2(p(x)) \\
+    &\; Replacing \;with \;the \;definition \;of \;Entropy \;and \;Marginalize \;right \;hand \;term \;over \;y  \\
+    =&\; -H[x \mid y] - \sum_x \log_2(p(x)) [p(x_i,y_1) + p(x_i,y_2) + \ldots + p(x_i,y_n)] \\
+    =&\; -H[x \mid y] - \sum_x \log_2(p(x)) * p(x) \\
+    =&\; -H[x \mid y] + H [x] \\
+    =&\; H[x] - H[x \mid y] \\ \\
+    &\;Again \;using \; (i)\; and \;applying \;bayes \;rule \;again \\ \\
+    =&\; \sum_x \sum_y p(x,y) * \log_2(\dfrac{p(y|x)}{p(y)}) \\
+    &\; Splitting \;logarithm \\
+    =&\; \sum_x \sum_y p(x,y) * \log_2(p(y|x)) - \sum_x \sum_y p(x,y) * \log_2(p(y)) \\
+    &\; Replacing \;with \;the \;definition \;of \;Entropy \;and \;Marginalize \;right \;hand \;term \;over \;x  \\
+    =&\; -H[y \mid x] - \sum_y \log_2(p(x)) [p(x_1,y_i) + p(x_1,y_i) + \ldots + p(x_n,y_i)] \\
+    =&\; -H[y \mid x] - \sum_x \log_2(p(x)) * p(x) \\
+    =&\; -H[y \mid x] + H [y] \\
+    =&\; H[y] - H[y \mid x]
+    \end{align*}
+\end{enumerate}
+
+\section{Non-Normal Norms}
+
+\begin{enumerate}
+\item
+
+For the given vectors,the point closest to $x_1$ under each of the following norms is \\\\
+a) $L_0$: 
+\begin{align*}
+&\;Calculating \; L_0 \;distance \\
+&\; x_1 - x_2 = [0.4,-1.5,-1.6,0.9] \\
+&\; x_1 - x_3 = [0,0,-0.7,-7.1] \\
+&\; x_1 - x_4 = [0.9,0.5,-2,-0.5]\\
+\end{align*}
+So. $x_3$ is the closest with distance [0,0,0.7,7.1] \\\\
+b) $L_1$: 
+\begin{align*}
+&\; Calculating \; L_1 \;distance \\
+&\; \sum [x_1 - x_2] = [4.4] \\
+&\; \sum [x_1 - x_3] = [7.8] \\
+&\; \sum [x_1 - x_4] = [3.9] \\
+\end{align*}
+So, $x_4$ is the closest with distance 3.9
+c) $L_2$: 
+\begin{align*}
+\sqrt {\sum_i (x_{1i} - x_{2i})^2 } = 2.3748 \\
+\sqrt {\sum_i (x_{1i} - x_{3i})^2 } = 7.1344 \\
+\sqrt {\sum_i (x_{1i} - x_{4i})^2 } = 2.3043 \\
+\end{align*}
+So, $x_4$ is closest with distance 2.3043 \\\\
+d) $L_{\inf}$: 
+\begin{align*}
+&\; \max (x_1 - x_2) = 1.6 \\
+&\; \max (x_1 - x_3) = 7.1 \\
+&\; \max (x_1 - x_4) = 2 \\
+\end{align*}
+So $x_2$ is the closest with distance 1.6 \\\\
+\item 
+
+i) "loss function" of $y - \hat{y}$ =  \\
+\begin{equation}
+  f(y - \hat{y})=\begin{cases}
+    k, & \text{if $(y - \hat{y})>0$}.\\
+    0, & \text{otherwise}.
+  \end{cases}
+\end{equation} \\
+ii) By third rule for norm $p(x) = 0$ means x is a zero vector but in our case $p(x)$ is 0 even when x is non zero thus it is not a norm \\ \\
+iii) $L_1$ norm describes the error in the best possible form as for any fixed value of $y$ we can fetch the of error function as a straight line distance between origin (value 0) and the value of $\hat{y}$ \\
+\end{enumerate}
+
+\end{document}
