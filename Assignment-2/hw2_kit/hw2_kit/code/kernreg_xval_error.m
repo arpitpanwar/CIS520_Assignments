@@ -16,3 +16,18 @@ function [error] = kernreg_xval_error(sigma, X, Y, parts, distFunc)
 %   MAKE_XVAL_PARTITION, KERNREG_TEST
 
 % FILL IN YOUR CODE HERE
+
+N = max(parts);
+E = zeros(1,N);
+for i=1:N
+    currPart = find(parts==i);
+    currNotPart = find((parts ~= i));
+    train_points = X(currNotPart,:);
+    test_points = X(currPart,:);
+    train_labels = Y(currNotPart);
+    test_labels = Y(currPart);
+    [predicted_labels] = kernreg_test(sigma,train_points,train_labels,test_points,distFunc);
+    E(i) = (1/size(test_points,1)) * sum(test_labels ~= sign(predicted_labels));
+end
+
+error = sum(E)/N;

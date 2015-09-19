@@ -10,3 +10,16 @@ function [H] = multi_entropy(p)
 %  N distributions over K values.
 
 % YOUR CODE GOES HERE
+%p = double(p);
+p_times_logp = @(x) min(0, x.*log2(x));
+H = -sum(p_times_logp(p));
+
+% 
+% [K N] = size(p);
+% 
+% H = ones(1,N);
+% 
+% for i = 1:N
+%     p_temp = p (:,i);
+%     H(1,i) = -(sum(p_times_logp(p_temp)));
+% end

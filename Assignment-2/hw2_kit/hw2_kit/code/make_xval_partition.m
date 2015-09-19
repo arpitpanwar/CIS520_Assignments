@@ -11,3 +11,19 @@ function [part] = make_xval_partition(n, n_folds)
 % of the i'th data point.
 
 % YOUR CODE GOES HERE
+part = [];
+vals = floor(n/n_folds);
+diff =  n-(vals*n_folds);
+
+for i = 1:vals
+    part = [part randperm(n_folds)];
+end
+
+if(diff > 0)
+    diffRand = randperm(n_folds);
+    part = [part diffRand(1:diff)];
+end
+
+
+
+

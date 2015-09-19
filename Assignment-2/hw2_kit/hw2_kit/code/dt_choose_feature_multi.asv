@@ -56,7 +56,7 @@ for i = colidx
     for j = 1:size(split_f,2)
         y_given_x = bsxfun(@and, Z, split_f(:,j));
         y_given_notx = bsxfun(@and, Z, ~(split_f(:,j)));
-        cond_H =[cond_H; px(j).*multi_entropy(sum(y_given_x)./sum(split_f(:,j))) + ...
+        cond_H(j) =[conpx(j).*multi_entropy(sum(y_given_x)./sum(split_f(:,j))) + ...
             (1-px(j)).*multi_entropy(sum(y_given_notx)./sum(~split_f(:,j)))];
     end
     

@@ -6,7 +6,7 @@
 load('../data/breast-cancer-data-fixed.mat');
 
 %% 2.1
-answers{1} = 'Error reduces as the number of folds increase but becomes constant afer 4 folds. For noisy data the error reduces at a high rate till fold count is 8 and after that the rate is really low.';
+answers{1} = 'This is where your answer to 2.1 should go. Just as one long string in a cell array';
 % K =1;
 % N = [2, 4, 8, 16];
 % nfold_errs = zeros(100,4);
@@ -93,7 +93,7 @@ answers{1} = 'Error reduces as the number of folds increase but becomes constant
 % YOU MUST SAVE YOUR PLOTS TO THESE EXACT FILES.
 
 %% 2.2
-answers{2} = 'Sigma for normal data = 4 , Sigma for noisy data = 6 and K for normal data = 3 and for noisy data K =9';
+answers{2} = 'This is where your answer to 2.2 should go. Short and sweet is the key.';
 
 % K_2 = [1:2:15];
 % N = 10;
@@ -136,7 +136,7 @@ answers{2} = 'Sigma for normal data = 4 , Sigma for noisy data = 6 and K for nor
 % hold;
 % errorbar(K_2,y_test_noisy,e_test_noisy);
 
-sigma = [1:1:8];
+sigma = [1:2:15];
 N = 10;
 nfold_errs = zeros(100,4);
 nfold_errs_noisy = zeros(100,4);
@@ -153,14 +153,14 @@ for i=1:100
     y_split = Y(p);
     test_labels = Y(~p);
     test_labels_noisy = Y(~p1);
-    for j=1:size(sigma,2)
+    for j=1:size(K_2,2)
        part = make_xval_partition(size(x_split,1),N);
        part1 = make_xval_partition(size(x1_split,1),N);
-       nfold_errs(i,j) = kernreg_xval_error(sigma(j), x_split, y_split, part, 'l2');
-       nfold_errs_noisy(i,j) = kernreg_xval_error(sigma(j), x1_split, y1_split, part1, 'l2');
-       predicted_test_labels = kernreg_test(sigma(j), x_split,y_split,test_data,'l2');
+       nfold_errs(i,j) = knn_xval_error(K_2(j), x_split, y_split, part, 'l2');
+       nfold_errs_noisy(i,j) = knn_xval_error(K_2(j), x1_split, y1_split, part1, 'l2');
+       predicted_test_labels = knn_test(K_2(j), x_split,y_split,test_data,'l2');
        predicted_test_error(i,j) = (1/size(test_data,1)) * sum(test_labels ~= sign(predicted_test_labels));
-       predicted_test_labels_noisy = kernreg_test(sigma(j), x1_split,y1_split,test_data_noisy,'l2');
+       predicted_test_labels_noisy = knn_test(K_2(j), x1_split,y1_split,test_data_noisy,'l2');
        predicted_test_error_noisy(i,j) = sum(test_labels_noisy ~= sign(predicted_test_labels_noisy))/size(test_labels_noisy,1);
     end
 end
@@ -173,11 +173,9 @@ e_test = std(predicted_test_error);
 y_test_noisy = mean(predicted_test_error_noisy);
 e_test_noisy = std(predicted_test_error_noisy);
 
-errorbar(sigma,y,e);
+errorbar(K_2,y_noisy,e_noisy);
 hold;
-errorbar(sigma,y_test,e_test);
-xlabel('Sigma');
-ylabel('Mean Error');
+errorbar(K_2,y_test_noisy,e_test_noisy);
 % Save your plots as follows:
 %
 %  noisy data, k-nn error vs. K --> plot_2.2-k-noisy.jpg
