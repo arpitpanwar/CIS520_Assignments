@@ -1,0 +1,150 @@
+\section{Linear Regression and LOOCV}
+
+%\newcommand{\bw}{\mathbf{w}}
+
+In the last homework, you learned about using cross validation as a
+way to estimate the true error of a learning algorithm.  A solution
+that provides an almost unbiased estimate of this true error is
+\emph{Leave-One-Out Cross Validation} (LOOCV), but it can take a
+really long time to compute the LOOCV error.  In this problem, you
+will derive an algorithm for efficiently computing the LOOCV error for
+linear regression using the \emph{Hat Matrix}.
+\footnote{Unfortunately, such an efficient algorithm may not
+be easily found for other learning methods.}
+
+Assume that there are $n$ given training examples,
+$(X_1,Y_1),(X_2,Y_2),\dots,(X_n,Y_n)$, where each input data point
+$X_i$, has $m$ real-valued features.  The goal of regression is to
+learn to predict $Y$ from $X$.  The \emph{linear} regression model
+assumes that the output $Y$ is a weighted \emph{linear} combination of
+the input features with weights given by $\bw$, plus some Gaussian
+noise.
+
+We can write this in matrix form by stacking the data points as the
+rows of a matrix $X$ so that $x_{ij}$ is the $j$-th feature of the
+$i$-th data point.  Then writing $Y$, $\bw$ and $\epsilon$ as column
+vectors, we can express the linear regression model in matrix form as
+follows:
+
+\[
+Y=X\bw + \epsilon
+\]
+
+where:
+
+\[
+Y = \left[\begin{array}{c}
+Y_1 \\
+Y_2 \\
+\vdots \\
+Y_n
+\end{array}\right],
+X = \left[\begin{array}{cccc}
+x_{11} & x_{12} & \dots & x_{1m} \\
+x_{21} & x_{22} & \dots & x_{2m} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{n1} & x_{n2} & \dots & x_{nm} \\
+\end{array}\right],
+\bw = \left[\begin{array}{c}
+w_1 \\
+w_2 \\
+\vdots \\
+w_m
+\end{array}\right],
+\,\,\,\,\,\mbox{and}\,\,
+\epsilon = \left[\begin{array}{c}
+\epsilon_1 \\
+\epsilon_2 \\
+\vdots \\
+\epsilon_n
+\end{array}\right]
+\]
+Assume that $\epsilon_i$ is normally distributed with variance
+$\sigma^2$.  We saw in class that the maximum likelihood estimate of
+the model parameters $\bw$ (which also happens to minimize the sum of
+squared prediction errors) is given by the \emph{Normal equation}:
+\[
+\hat{\bw} = (X^TX)^{-1} X^TY
+\]
+
+\noindent Define $\hat{Y}$ to be the vector of predictions using
+$\hat{\bw}$ if we were to plug in the original training set $X$:
+\begin{eqnarray*}
+\hat{Y} &=& X\hat{\bw}  \\
+    &=& X(X^T X)^{-1} X^T Y \\
+    &=& H Y
+\end{eqnarray*}
+where we define $H=X(X^T X)^{-1} X^T$ ($H$ is often called the
+\emph{Hat Matrix}).
+
+\noindent As mentioned above, $\hat{\bw}$, also minimizes the sum of
+squared errors:
+\[
+\mbox{SSE} = \sum_{i=1}^{n} (Y_i-\hat{Y}_i)^2
+\]
+Now recall that the Leave-One-Out Cross Validation score is defined to
+be:
+\[
+\mbox{LOOCV} = \sum_{i=1}^n (Y_i - \hat{Y}_i^{(-i)})^2
+\]
+where $\hat{Y}^{(-i)}$ is the estimator of $Y$ after removing the
+$i$-th observation (i.e., it minimizes $\sum_{j\neq i} (Y_j -
+\hat{Y}_j^{(-i)})^2$). 
+
+\begin{enumerate}
+
+\item To begin with, we should consider when it is possible to compute $\hat{\bw}$ in this framework.
+	\begin{enumerate}
+	\item 	$\hat{\bw}$ is not well defined because for $ m>n$ the matrix ${X^T}X$ is not invertible	
+
+	\item	If X is not invertible then it will not be well defined
+	\end{enumerate}
+For the rest of question 1, assume $\hat{\bw}$ is well-defined.
+
+\item  $O(nm^3)$
+
+  
+\item 
+\begin{align*}
+	\hat{Y}_i = H * Y \\
+	\hat{Y}_i = \sum_j H_{ij} Y_j\\	
+\end{align*}
+
+
+\item 
+\begin{align*}
+	SSE = \sum\limits_{i=1}^n \left( Y_i - \hat{Y}_i \right)^2 \\
+	 Similarly \\
+	SSE = \sum\limits_{i=1}^n \left( Z_i - \hat{Z}_i \right)^2 \\	
+	Replacing\; the \; values\; of \; Z \; \\
+	= \sum\limits_{i=1; j\neq i}^{n} \left(Y_j - \hat{Z}_i \right)^2 + \left(\hat{Y}_i^{(-i)} -  \hat{Z}_i \right) \\
+	The \;equation \;can \;be \;minimized \;when \; \hat{Z}_i = \hat{Y}_i^{(-i)}\\
+	= \sum\limits_{i=1; j\neq i}^{n} \left(Y_j - \hat{Z}_i \right)^2  + 0 \\
+\end{align*}
+
+
+\item   We have $\hat{Y}_i = \sum_i H_{ij} Y_i$ \\
+We know from 4 that $Z_j = Y_j  j \neq i$ and $Z_j = \hat{Y}_i^{(-i)}  j = i$\\
+Since H is just dependent on X
+By analogy we can say  $\hat{Y}_i^{(-i)} =  \sum_i H_{ij} Z_i$ \\
+
+\item Using 5 and 3
+\begin{align*}
+\hat{Y}_i - \hat{Y}_i^{(-i)} = \sum_{j \neq i} H_{ij} Y_j + H_{ii}Y_i - \sum_{j \neq i} H_{ij} Z_j + H_{ii}Z_i  \\
+Using\;4  \; and \;substituting\; Z_i = \hat{Y}_i^{(-i)}\; and \;Z_j = Y_j \; and \;solving\\
+\hat{Y}_i - \hat{Y}_i^{(-i)} = H_{ii}Y_{i} - H_{ii}\hat{Y}_i^{(-i)}
+\end{align*}
+
+\item From 6 we have  $\hat{Y}_i - \hat{Y}_i^{(-i)} = H_{ii}Y_i - H_{ii}\hat{Y}_i^{(-i)}$
+\begin{align*}
+Solving \; the \; equation \\
+\hat{Y}_i^{(-i)} * \left( 1 - H_{ii} \right) = \hat{Y}_i - H_{ii}Y_{i} \\
+\hat{Y}_{i}^{(-i)} = \dfrac{\hat{Y}_i - H_{ii}Y_i}{1 - H_{ii}Y_{i}} \\
+Entering \; the \; value \; in \;equation \;for \; LOOCV \\
+LOOCV = \sum\limits_{i=1}^{n}\left( \dfrac{Y_i \left(1 - H_{ii}\right) - \hat{Y}_i + H_{ii}Y_i}{(1 - H_{ii})} \right)^2\\
+               =  \sum\limits_{i=1}^{n} \left( \dfrac{Y_i - \hat{Y}_i} {1 - H_{ii}} \right)^2 \\
+\end{align*}
+Complexity for it depends on the complexity of $X (X^T X)^{-1}X^T Y$ \\
+Which is the complexity of matrix multiplication  = $O(m^2*n^2 + m^3 *n + n^3 * m)$
+
+\end{enumerate}

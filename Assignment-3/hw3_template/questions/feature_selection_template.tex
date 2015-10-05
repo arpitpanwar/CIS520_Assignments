@@ -1,0 +1,47 @@
+\section{Feature Selection}
+We saw in class that one can use a variety of regularization penalties in linear regression.
+
+$$\hat{w} = \arg \min_w  \quad \|Y - Xw\|_2^2 + \lambda \|w\|_p^p$$
+
+Consider the three cases, $p$ = 0, 1, and 2. We want to know what
+effect these different penalties have on estimates of $w$.
+
+Let's see this using a simple problem. 
+
+Use the following data (also provided in matlab format).  Assume the
+constant term in the regression is zero, and assume $\lambda=1$,
+except, of course, for question (1).  You don't need to write code
+that solves these problems in their full generality; instead, feel
+free to use matlab to do the main calculations, and then just do a
+primitive search over parameter space by plugging in a few different
+values. Matlab function fminsearch will be helpful. (\emph{Note:} If you are not familiar with function handles, please review the code from HW 2 or see Matlab documentation.)
+
+\begin{enumerate}
+\item $\hat{w}_{MLE} = [0.8891;-0.8260;4.1902]$ 
+\item $\hat{w} = [0.8646;-0.8210;4.1218]$ 
+\item $\hat{w} = [0.8749;-0.8182;4.1829]$
+\item Calculating the values of $\hat{w}$ for 8 cases i.e. permuting a 3x1 vector of 0's and 1's and putting in the values of\\
+	w computed in the first part.\\
+	We get the minimum values for [1;1;1] since the $L_0$ norm will return 0 thus in that case the value will be equal to $W_{MLE}$\\
+	Thhus w is [0.8891;-0.8260;4.1902] and the min value is    3.1078e+03\\
+
+\item 
+
+\item When $\lambda > 0$, we make a trade-off between minimizing the sum of squared errors and the magnitude of $\hat{w}$. In the following questions, we will explore this trade-off further. For the following, use the same data from data.mat.
+\begin{enumerate}
+\item $0.0061$
+
+\item
+\begin{enumerate}
+	\item Yes the error doubles because the bias increases in the training data.
+
+	\item Nothing happens
+
+\end{enumerate}
+
+\item $\lambda = 4$
+
+\item $\lambda = 28$
+
+\end{enumerate}
+\end{enumerate}
