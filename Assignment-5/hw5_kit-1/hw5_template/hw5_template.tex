@@ -1,0 +1,185 @@
+\documentclass[english]{article}
+\usepackage[latin9]{inputenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{latexsym}
+\usepackage{xspace}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bw}{\mathbf{w}}
+
+\title{CIS 520, Machine Learning, Fall 2015: Assignment 5 \\
+Due: Friday, October 23rd, 11:59pm}
+\date{}
+\author{Your name here}
+
+
+\begin{document}
+\maketitle
+{\normalsize Collaborators: \\ 
+\\ \underline{ Type Collaborator Name Here        }} \\
+
+\section{Kernel Regression and Locally Weighted Regression}
+\label{sec:regression}
+
+Given a set of $n$ examples, $(\bx_i,y_i)$, $i=1,\ldots,n$, a linear
+smoother is defined as follows. For any $\bx$, there exists a vector
+$\ell(\bx)=(\ell_1(\bx),\ldots,\ell_n(\bx))^\top$ such that the
+estimated output $\hat{y}$ of $\bx$ is
+$\hat{y}=\sum_{i=1}^{n}\ell_i(\bx)y_i=\ell(\bx)^\top Y$ where $Y$ is a
+$n\times 1$ vector, $Y_i=y_i$.  This means that the prediction is a
+linear function of the training responses ($y_i$s) and it varies
+slowly and smoothly with change or noise in $y_i$s.
+
+\bigskip
+
+\begin{enumerate}
+\item (6 points) Recall that in linear regression with basis functions
+  $h$, we assume the data are generated from the model
+  $y_i=\sum_{j=1}^m w_j h_j(\bx_i)+\epsilon_i$. The least squares
+  estimate for the coefficient vector $\bw$ is given by $\bw^*=(H^\top
+  H)^{-1}H^\top Y$, where $H$ is a $n\times m$ matrix,
+  $H_{ij}=h_j(\bx_i)$. Given an input $\bx$, what is the estimated
+  output $\hat{y}$? (Matrix form solution is required. You may want to
+  use the $m\times 1$ vector $h(\bx)=[h_1(\bx),\ldots,h_m(\bx)]^\top$)
+  Is linear regression is a linear smoother?
+
+\item (6 points) In kernel regression using the kernel $K(\bx_i,\bx)=
+  \exp\{\frac{-||\bx_i-\bx||^2}{2\sigma^2}\}$, given an input $\bx$,
+  what is the estimated output $\hat{y}$?  Is kernel regression is a
+  linear smoother?
+
+\item (6 points) In locally weighted regression, given an input $\bx$,
+  what is the estimated output $\hat{y}$?  Is locally weighted
+  regression is a linear smoother?
+
+\item (6 points) If we divide the range $(a,b)$ ($a$ and $b$ are real
+  numbers, and $a<b$) into $m$ equally spaced bins denoted by
+  $B_1,\ldots,B_k$.  Define the estimated output
+  $\hat{y}=\frac{1}{|B_k|}\sum_{i:\bx_i\in B_k}y_i$, for $\bx\in B_k$,
+  where $|B_k|$ is the number of points in $B_k$. In other words, the
+  estimate $\hat{y}$ is a step function obtained by averaging the
+  $y_i$s over each bin. This estimate is called the regressogram. Is
+  this estimate a linear smoother? If yes, give the vector $\ell(\bx)$
+  for a given input $\bx$; otherwise, state your reasons.
+
+
+\item (6 points) Suppose we fit a linear regression model, but instead
+  of sum of residual squares $||H\bw-Y||_2^2$, we minimized the sum of
+  absolute values of residuals: $||H\bw-Y||_1$. Is the result a linear
+  smoother?  Prove (give formula for $\ell(\bx)$) or disprove (give a
+  counter-example).  Hint: Think about the median---for a set of real
+  numbers $(y_1,\ldots,y_n)$ where $n$ is odd, the median $y_M$
+  minimizes the sum of absolute differences $M = \arg\min_j
+  \sum_{i=1}^n |y_j - y_i|$.
+  
+  
+
+\end{enumerate}
+  
+\section{Supervised Deep Learning}
+\label{sec:sdl}
+
+Neural networks are among the most powerful machine learning models, which can represent complex, non-linear functions. However, due to a high number of hyperparameters, neural networks are extremely difficult to tune for a particular task. In this exercise, we will apply neural networks for the task of handwritten digit recognition in a supervised and unsupervised setting. Specifically we will examine how the choice of different parameters affect the performance of a model. We provide all of the necessary code to complete this homework in \textit{DL\_toolbox} folder.
+
+
+\bigskip
+
+\begin{enumerate}
+\item (5 points) File \textit{demo\_NN.m} contains the code required to train a neural network. You will now train two models: a plain neural network and a neural network that employs $L_2$ weight decay. Report the testing error of both models. Which model achieves lower testing error? Can you provide an explanation why?
+
+
+
+\item (5 points) Now we will examine how a different choice of $L_2$ weight decay parameter affects the performance of the model. Use  \textit{demo\_NN\_L2\_decay.m} to train the models with $L_2$ weight decay parameters $0.01$ and $0.001$. Report the testing error achieved by both models. Which model performs better? How does the performance compare to the model that we trained in the previous part (ie. model that used $0.0001$ as its $L_2$ weight decay parameters)? Why?
+
+
+\item (5 points) Dropout is a very popular technique in deep learning community that enforces regularization in the neural network. The basic idea behind dropout is simple: during the training a selected fraction of neurons are zeroed out. We will now explore how the choice of a dropout parameter affect the performance of the model. Use \textit{demo\_NN\_dropout.m} to train the model with dropout parameters of $0.25$ and $0.75$. That is, each of these models will zero out $25\%$ and $75\%$ of the neurons respectively. Report the testing error achieved by each of these models. Which parameter value achieves the best performance? Why? Does the dropout help to reduce testing error compared to the model without a dropout?
+
+
+\item (5 points) Finally, we will examine how the size of a hidden layer affect the model's performance. Use \textit{demo\_NN\_hidden\_size.m} to train the model with hidden layer size parameters of $25, 100$ and $175$. Report the testing error achieved by each of these models. Which hidden layer size parameter achieves the best performance? Why do you think that is? Are there any disadvantages to the model that achieves lowest testing error relative to the model that achieves worst testing error in this case?
+
+\end{enumerate}
+
+\section{Unsupervised Deep Learning }
+\label{sec:udl}
+
+We now turn to unsupervised neural nets, which are also known as auto-encoders. Instead of minimizing the error with respect to ground truth, these models are trained to minimize the input reconstruction error (ie. treating input as ground truth). Auto-encoders can be viewed as models that learn a new non-linear feature representation. That is, we can take the hidden layers of a trained auto-encoder and use it as input features to a supervised learning method. In this exercise, we will examine if auto-encoders can learn a good feature representation and also how different parameter choices affect their performance.
+
+\begin{enumerate}
+\item (5 points) Use \textit{demo\_SAE.m} to train a plain auto-encoder. Visualize the learnt filters inside the auto-encoder using the \textit{visualize} function that is provided in the code. Embed the visualized filters in your writeup. Also save the trained model into \textit{models} directory as \textit{SAE.mat}.
+
+\item (5 points) Use \textit{demo\_SAE.m} to train an auto-encoder with half of the input features zeroed out randomly. This parameter can be set by changing \textit{inputZeroMaskedFraction} parameter to $0.5$. Visualize the learnt filters inside the auto-encoder using the \textit{visualize} function that is provided in the code. Embed the visualized filters in your writeup. Also save the trained model into \textit{models} directory as \textit{SAE\_noisy.mat}. Visually compare the learnt filters from this part to the filters that were learnt in the previous part? What is the major difference? Judging from the visualizations do you think one of these auto-encoders learnt better features than the other?
+
+
+\item (5 points) Take a look at \textit{demo\_SAE\_supervised.m} and use the hidden layer representation of autoencoder models from the previous parts as input to a supervised neural network. Do this with both models: \textit{SAE.mat} and \textit{SAE\_noisy.mat}. Report the testing errors achieved in both cases. Which auto-encoder features produce lower testing error? Does using the features learnt by auto-encoders achieves lower or higher testing error in comparison to using plain features? Compare the actual testing errors achieved by both approaches.
+
+\end{enumerate}
+
+\section{Lagrange Duality and the LASSO}
+\label{sec:lag}
+
+\begin{enumerate}
+\item (5 points) The function \ref{Lasso21} is convex in $\mathbf{w}$ (quadratic plus $L_1$ norm), which means its minima satisfy $\nabla_w (\text{Eq.} \; \ref{Lasso21})=0$. Compute the gradient with respect to $\mathbf{w}$ of this expression and show that the resulting condition for any optimal $\mathbf{w}$ is
+\begin{equation}\label{normalish}
+\displaystyle \mathbf{0} = -\mathbf{X}^T(\mathbf{y}-\mathbf{X}\mathbf{w}) + \lambda \mathbf{v},
+\end{equation}
+where $\mathbf{v}=(v_1,\dots,v_m)\in\mathbb{R}^m$ satisfies
+$v_i = 
+\begin{cases} 
+1 \quad \text{if} \quad w_i > 0\\
+-1 \quad \text{if} \quad w_i < 0\\
+\in[-1,1] \quad \text{if} \quad w_i = 0
+\end{cases}$\\
+
+\item (5 points) Set up the constrained optimization problem \ref{Lasso11} to be solved using the method of Lagrange multipliers. Write down the Lagrangian $L(\mathbf{w},\lambda)$ and Karush-Kuhn-Tucker conditions.\\
+
+\item (5 points) Based on the discussion, we only need to find solutions for one case of the KKT conditions when $t<t_0$. Which case is this, and why?
+
+\item (5 points) Define\footnote{To be technical, this should be the supremum (least upper bound) rather than the maximum; we will not worry about this distinction here.}
+\begin{equation}\label{primal}
+\displaystyle L^*(\mathbf{w}) = \max_{\lambda \ge 0} L(\mathbf{w},\lambda)
+\end{equation}
+Show that 
+\begin{equation}\label{primaleq}
+L^*(\mathbf{w}) =\begin{cases} 
+	f(\mathbf{w}) \quad \text{if} \quad (t - f_1(\mathbf{w})) \ge 0\\
+	\infty \qquad \text{if} \quad (t - f_1(\mathbf{w})) < 0\\
+\end{cases}
+\end{equation}
+	
+Argue that, therefore, when $t<t_0$, minimizing $L^*(\mathbf{w})$ over all possible $\mathbf{w}$ is equivalent to solving the constrained optimization problem \ref{Lasso11}. Minimizing $L^*(\mathbf{w})$ is known as the \emph{primal problem}.\\
+\emph{Hint: Show that if} $\mathbf{w}$ \emph{optimizes the constrained problem, then it also must minimize} $L^*$. \emph{Next, show that if} $\mathbf{w}$ \emph{minimizes} $L^*$, \emph{then it also must optimize the constrained problem. Proof by contradiction may be useful.}
+
+
+\item (5 points) Define\footnote{Likewise, technically this should be the infimum (greatest lower bound) rather than the minimum.}
+\begin{equation}\label{dual}
+\displaystyle g (\lambda) =\min_{\mathbf{w} \in \mathbb{R}^m} L(\mathbf{w}, \lambda)
+\end{equation}
+Maximizing $g (\lambda)$ for $\lambda \ge 0$ is the \emph{dual problem} to the primal shown above.\\
+	
+One can show\footnote{since $L(\mathbf{w}, \lambda)$ is convex and goes to $+\infty$ as $||\mathbf{w}||_1\to\infty$} that, for fixed $\lambda$, $L(\mathbf{w},\lambda)$ has at least one minimum over $\mathbf{w}$. We can solve for a minimum in the usual way: by taking the gradient of $L$ with respect to $\mathbf{w}$ and setting it to zero. Do this to show that if $\bar{\mathbf{w}}$ minimizes $L(\mathbf{w}, \lambda)$ for fixed $\lambda$, then
+\begin{equation}\label{normalish2}
+\displaystyle \mathbf{0} = -\mathbf{X}^T(\mathbf{y}-\mathbf{X}\bar{\mathbf{w}}) + \lambda \mathbf{v},
+\end{equation}
+with $\mathbf{v}$ defined as before, in \ref{normalish}.\\
+
+\item (5 points) Show that $\mathbf{v}^T\bar{\mathbf{w}} = ||\bar{\mathbf{w}}||_1$. Consequently, show that if $\bar{\mathbf{w}}$ minimizes $L(\mathbf{w}, \lambda)$ for fixed $\lambda$, then 
+\begin{equation}\label{wlambdarelation}
+\lambda = (\mathbf{y}-\mathbf{X}\bar{\mathbf{w}})^T\mathbf{X}\bar{\mathbf{w}}/||\bar{\mathbf{w}}||_1.
+\end{equation}\\
+
+\item (5 points) Matlab simulation for $t=6,10,14$...
+	\begin{enumerate}
+	\item For the different values of $t$, what do you notice about the differences between $\mathbf{w}_{MLE}$ (the solution computed for the OLS problem) and $\mathbf{w}_{OPT}$? How does the L1 penalty tend to zero out coefficients of $\mathbf{w}_{OPT}$ for the different values of $t$? Based on the coefficients used to generate the data (see in the file), is this what you'd expect? 
+	\item How do the computed $\lambda$'s change with $t$? Why is this?
+
+	\end{enumerate}
+
+\end{enumerate}
+
+\end{document}
