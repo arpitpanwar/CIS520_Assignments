@@ -13,12 +13,12 @@ rand('state',0)
 sae = saesetup([784 100]);
 sae.ae{1}.activation_function       = 'sigm';
 sae.ae{1}.learningRate              = 1;
-sae.ae{1}.inputZeroMaskedFraction   = 0.0;
+sae.ae{1}.inputZeroMaskedFraction   = 0.5;
 opts.numepochs =   10;
 opts.batchsize = 100;
 sae = saetrain(sae, train_x, opts);
 visualize(sae.ae{1}.W{1}(:,2:end)')
 
 
-output_path='models/SAE.mat';
+output_path='models/SAE_noisy.mat';
 save(output_path,'sae');

@@ -16,7 +16,7 @@ rand('state',0)
 
 % To modify the size of a hidden layer simply replace 100 in the 
 % line below with the desirable size
-nn = nnsetup([784 100 10]); 
+nn = nnsetup([784 175 10]); 
 
 opts.numepochs =  25;   %  Number of full sweeps through data
 opts.batchsize = 100;  %  Take a mean gradient step over this many samples

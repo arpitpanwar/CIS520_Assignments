@@ -7,7 +7,7 @@ test_x  = double(test_x)/255;
 train_y = double(train_y);
 test_y  = double(test_y);
 
-input_path='models/SAE_noisy.mat';
+input_path='models/SAE.mat';
 load(input_path);
 
 % Use the SDAE to initialize a FFNN

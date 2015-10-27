@@ -23,7 +23,7 @@ w_MLE = (X'*X)\(X'*Y);
 
 % Define the constraint constant to be used in the constraint (2) in the
 % homework
-t = 10;
+t = 6;
 
 % Compute the constraint value. nonlcon = "Non-linear constraint",
 % used in fmincon.
