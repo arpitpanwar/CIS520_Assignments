@@ -1,0 +1,62 @@
+\section{Principal Component Analysis \hpoints{30}}
+
+\paragraph{Task description.}
+Here we will consider a dataset for optical character recognition (OCR).  
+The dataset we provide consists of a sequence of words, one character per row.%
+\footnote{This dataset is a modified version of the dataset at
+\url{http://www.seas.upenn.edu/~taskar/ocr/}, which has been
+subsampled and slightly altered to simplify the processing.}
+%
+The very first character of each word was capitalized in the original
+data and has been omitted for simplicity. The dataset is located in 
+{\tt data/ocr\_data.mat}. The format of the data is described in 
+{\tt data/data\_format.txt}, so please read that file before continuing.
+
+In this problem you will use PCA to reduce the training data (the 0/1
+pixel data of the training set) from 64 dimensions to 20 dimensions. To 
+answer the questions you need to write code in Matlab to process
+the dataset. {\em You {\bf are} allowed to use built-in matlab function for PCA, K-means, etc. for this problem.}
+Note, there is {\em no} automatic grader for this problem
+and you do not need to submit your code for grading.
+
+\begin{enumerate}
+\item \points{5} Using the top 2 PCA dimensions, display all the test
+  letters ``x'' and ``y'', using crosses and circles respectively.
+  An example of a plot of ``x'' vs ``w'' is shown in Figure
+  \ref{fig:pca_xw} below.
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.65\textwidth]{images/pca_x_w}
+    \caption{Plot of 'x'-'w' characters from top 2 PCA
+        dimensions}\label{fig:pca_xw}
+  \end{figure}
+  
+\item \points{5} Plot the average (in sample) reconstruction error  $||X - \hat{X}||_F$
+of the digits as a function of the number of principle components that are included.  How many
+principle components are required to get 90\% reconstruction accuracy? (I.e., to explain 90\% of the 
+variance:  $||X - \hat{X}||_F/ ||X - \bar{X}||_F = 0.9$  where $\bar{X}|$ is a matrix, every row of which is the
+average $x$ -- the average image.  Reminder: be sure to subtract that mean from $X$ before you find the principle components, 
+and to add it back in for your predictions.
+
+
+\item \points{10} Learn a Gaussian Naive Bayes classifier using MLE on
+  the PCA-ed data and report accuracy on the test set using 5, 10 and
+  20 top dimensions.  You should be learning a mean and variance for
+  each class and each dimension.  So 26 parameters for class priors,
+  and 26 times (5,10 or 20) means plus 26 times (5,10, or 20)
+  variances.  In addition to reporting accuracies, write a brief
+  description (3-4 sentences) of how these results compare to the
+  performance of Naive Bayes on the original data. {\bf Please include your
+    source code in your write-up, but do not include built-in matlab functions.}
+
+
+\item \points{10} Learn a k-means classifier on
+  the samePCA-ed data and report accuracy on the test set using 5, 10 and
+  20 top dimensions.  In addition to reporting accuracies, write a brief
+  description (3-4 sentences) of how these results compare to the
+  performance of The Gaussian Naive Bayes classifier. {\bf Please include your
+    source code in your write-up, but do not include built-in matlab functions.}
+
+\end{enumerate}
+
