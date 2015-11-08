@@ -26,6 +26,20 @@ end
 % P.S., if we didn't use a sparse matrix, our full X matrix would take up
 % 500 MB of memory!
 
+rowidx = [];
+colidx = [];
+values = [];
+id = 1;
+for i=1:numel(data)
+      for j = 1:size(data(i).counts,1)
+        rowidx(id) = i;
+        values(id) = data(i).counts(j,2);
+        colidx(id) = data(i).counts(j,1);
+        id = id +1;
+      end
+end
+
+
 X = sparse(rowidx, colidx, values, numel(data), numel(vocab));
 
 % Do not touch this: this computes the text label to a numeric 0-1 label,

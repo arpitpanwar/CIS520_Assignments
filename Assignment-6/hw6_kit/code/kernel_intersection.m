@@ -17,3 +17,11 @@ K = zeros(m, n);
 % column operations in matlab are MUCH faster than row operations.
 
 % YOUR CODE GOES HERE.
+X_t = X';
+X2_t = X2';
+
+for i = 1 : m
+    for j = 1:n
+        K(i,j) = sum(bsxfun(@min,X_t(:,j),X2_t(:,i)));
+    end
+end

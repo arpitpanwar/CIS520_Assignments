@@ -13,3 +13,12 @@ function step = update_passive_aggressive(X_i, y_i, w)
 
 
 %% YOUR CODE GOES HERE
+
+if (y_i*X_i*w >= 1)
+    L = 0;
+else
+    L = (1-y_i*X_i*w);
+end
+
+n = L/norm(X_i)^2;
+step=n*y_i;

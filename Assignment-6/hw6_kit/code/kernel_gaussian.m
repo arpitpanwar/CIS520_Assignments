@@ -9,11 +9,25 @@ function K = kernel_gaussian(X, X2, sigma)
 % matrix K where K(i,j) = k(X(i,:), X2(j,:)) and k is the Guassian kernel
 % with parameter sigma=20.
 
+D = size(X,2);
 n = size(X,1);
 m = size(X2,1);
 K = zeros(m, n);
+
+
 
 % HINT: Transpose the sparse data matrix X, so that you can operate over columns. Sparse
 % column operations in matlab are MUCH faster than row operations.
 
 % YOUR CODE GOES HERE.
+disp('Before Gaussian');
+
+X_t = X';
+X2_t = X2';
+
+for j=1:m
+    for i=1:n
+        K(j,i) = exp(-(norm(X2_t(:,j) - X_t(:,i)).^2)/(2*sigma^2));
+    end
+end
+disp('Gaussian done');

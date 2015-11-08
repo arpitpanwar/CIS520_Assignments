@@ -1,9 +1,11 @@
 %% Plots/submission for Perceptron portion, Question 2.
 
+addpath ./libsvm;
+
 %% Put your written answers here.
 clear all
 close all
-answers{1} = 'Answer to perceptron questions';
+answers{1} = strcat('i. Constant converges quickly \n ', 'ii . Constant \n', 'iii . Passive aggressive has least training error \n','iv. Linear SVM has lower test error than perceptron \n');
 
 save('problem_2_answers.mat', 'answers');
 
@@ -50,6 +52,8 @@ legend(legend_names)
 
 print -djpeg -r72 plot_2.1.jpg;
 
+%bar(results.(['train_err_const']));
+%bar(results.(['train_err_pa']));
 
 %Comparison with SVM
 [results.test_err_svm info] = kernel_libsvm(Xtrain, Ytrain, Xtest, Ytest, @(x1,x2)kernel_poly(x1,x2,1));

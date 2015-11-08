@@ -5,11 +5,42 @@
 Show that if $X$ has rank $p$ (all its columns are linearly independent) and $n > p$ 
 then using the $p$-dimensional pseudo-inverse $X^+$ in $\hat{w} = X^+ y$ solves the least squares problem
 $\hat{w} = argmin \sum_i (y - Xw)^2$.
+\begin{align*}
+\hat{w} =& argmin \sum_i (y - Xw)^2\\
+	   =& \; (y - Xw)^T (y - Xw) \\
+	   =&\; X^T (y - Xw) = 0 \\
+\hat{w} =&\; (X^T X)^{-1} X^T y \\
+& \text{Now solving the middle term }\\
+(X^T X)^{-1} X^T = &\; ((U \Lambda V^{T})^{T} U \Lambda V^T )^{-1} (U \Lambda V^T)^T \\
+	=&\; (V \Lambda^T U^T U \Lambda V^T)^{-1} (U \Lambda V^T)^T \\
+	& \text{Taking in the inverse and simplifying } \\
+	=&\; (V \Lambda^{-1} \Lambda^{-1} V^{-1}) (V \Lambda^T U^T) \\
+	& \text{We know inverse and transpose of orthogonal vector are the same} \\
+	=&\; (V \Lambda^{-1} \Lambda^{-1} \Lambda^{T} U^{T}) \\
+	& \text{We know that transpose of Lambda and Lambda are same as it is a symmetric diagonal matrix} \\
+	=&\; (V \Lambda^{-1} \Lambda^{-1} \Lambda U^{T} ) \\
+	=&\; (V \Lambda^{-1} U^{T}) \\
+	=&\; X^{+} \\
+	&\text{Thus pseudo-inverse solves the least squares problem} \\
+\end{align*}
 
 \item \points{7} 
 We want to efficiently find the largest eigenvectors of the matrix $X^TX$ where  $X$ is $n x p$ with $p \gg n$.
-Show how to do this using the largest eigenvectors of $XX^T$
+Show how to do this using the largest eigenvectors of $XX^T$ \\
+
+\text{We know that $X X^T$ and $X^T X$ have the same eigen values. Let us assume $\lambda$ is the largest eien value}
+
+\begin{align*}
+	X X^T a =&\; \lambda a\\
+	X^T (X X^T a) = X^T \lambda a\\
+	X^T X (X^T a) = \lambda (X^T a)	\\
+\end{align*}
+\text{Since we know p greater than n, it is much easier to do computation using the equation above since the complexity will just be } $O(n^2)$ \text{ as opposed to } $O(p^2)$ \text{ if we were to directly compute } $X^T X$ \\
+
+
 
 \end{itemize}
+
+
 
 \PointStats

@@ -29,5 +29,16 @@ averaged_w = zeros(D,1);
 err = zeros(numPasses*N,1);
 
 %%YOUR CODE GOES HERE
+index = 1;
+for i = 1:numPasses
+    for j = 1:N
+        w= w + update_step_fnc(X(j,:),Y(j),w)*X(j,:)';
+        averaged_w = averaged_w + w;
+        err(index) = perceptron_error(X,Y,averaged_w);
+        index = index+1;
+    end
+end
+
+averaged_w = averaged_w/(index-1);
 
 

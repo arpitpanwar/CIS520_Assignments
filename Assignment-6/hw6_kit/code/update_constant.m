@@ -15,3 +15,4 @@ function step = update_constant(X_i, y_i, w, Rate)
 %% YOUR CODE GOES HERE
 % This should be a very simple one liner
 
+step=Rate*(y_i - sign(X_i*w));
