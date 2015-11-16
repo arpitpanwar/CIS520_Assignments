@@ -15,7 +15,7 @@ test_x  = X_test/255;
 
 
 %% logistic 
-addpath('./liblinear-2.1/matlab');
+addpath('./liblinear');
 [ precision_ori_log ] = logistic( X_train, Y_train,X_test, Y_test );
 [ precision_pca_log ] = logistic( score_train(:, 1:numpc), Y_train, score_test(:,1:numpc), Y_test );
 [ precision_ae_log ] = logistic( new_feat, Y_train, new_feat_test, Y_test );

@@ -7,8 +7,8 @@ function [score_train,score_test,numpc] = pca_getpc(train_x,test_x)
 score_train = train_x * coeff_train;
 score_test = double(test_x) * coeff_train;
 %figure, plot(cumsum(latent)/sum(latent));
-
+plot(cumsum(latent)/sum(latent));
 % Set you numpc here
-numpc = ;
+numpc = 50;
 end
 

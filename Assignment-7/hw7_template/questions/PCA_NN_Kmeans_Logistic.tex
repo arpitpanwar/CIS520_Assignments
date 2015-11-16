@@ -10,6 +10,7 @@ Please use matlab function {\bf pcacov} on the covariance matrix of X to train c
 For PCA, choose the number of principle components so as to keep 90\% reconstruction accuracy. How many principle components do we need in this case? Use that many principle components. \\
 For the auto-encoder, the setup to train a model is basically the same as what we did in hw5, except that in this homework we change the hidden layer dimension from 100 to 200 (see {\bf rbm.m} for details). \\ 
 
+Use num of principal components as 50. \\
 
 \item Now we will do logistic regression on 3 different inputs:\\
 \begin{itemize}
@@ -25,9 +26,20 @@ for training \textbf{model = train(train\_y, sparse(train\_x),['-s 0','col'])}\\
 for testing  \textbf{[predicted\_lable] = predict(test\_y, sparse(test\_x),['-q','col'])}\\
 (see {\bf logistic.m} for details). \\ 
 Test your model on test data (load test.mat), what's the accuracy? \\
-Compare the performance of the accuracy on test set of the three inputs. What's your observation?
+Compare the performance of the accuracy on test set of the three inputs. What's your observation? \\
+
+Performance accuracy for original data = 0.8943 \\
+Performance accuracy for PCA'ed data = 0.9000 \\
+Performance accuracy for Auto-encoder data = 0.9466 \\
+
+The model with auto-encoder gives out the best data \\
 
 \item Do the same thing using K-means, with k = 10, 25 respectively, but run the code on PCA-ed data and auto-encoder only. Test your model on test.mat, what's the accuracy? \\
-Also, compare the performance of K-means with that of logistic regression.
+Also, compare the performance of K-means with that of logistic regression. \\
+
+Precision of Auto-encoder data with k-means for 10 and 25 = [0.6666;0.7651] \\
+Precision of principal components with K-means for 10 and 25 = [0.5913;0.7493] \\
+
+Precision of logistic regression is more than precision of kmeans \\
 
 \end{enumerate}

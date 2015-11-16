@@ -29,6 +29,10 @@ a greedy iterative clustering algorithm is used to alternatively update $\mu_k$ 
 \item \points{4} The greedy iterative clustering algorithm converges when the assignments no longer change. Is the algorithm guaranteed to converge in a finite number of steps? Briefly explain why or why not.\\
 {\em Hint: Think about the total possible number of assignments and the trend of the objective function after each iteration.}
 
+The greedy algorithm converges in a finite number of steps as at every step we always assign a point to a cluster.
+Thus the solution will always converge as at every step we assign the point to the closest cluster.\\
+
+
 \item \points{7} Consider the toy 2D dataset in the following
   figure. We set $K = 2$ in this problem. The * marker indicates the
   data point and the circle marker indicates the starting cluster
@@ -54,11 +58,19 @@ and include it in the .pdf you hand in or}
     points in each cluster (but you should see graphically what is happening.)}
 \end{itemize}
 
-\begin{figure}[th!]
+\begin{figure}[H]
   \centering
-  \includegraphics[scale=0.8]{images/blank.pdf}
+  \includegraphics[scale=0.8]{images/4_2_1}
   \caption{Figures for k-means}\label{fig:kmeans}
 \end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.8]{images/4_2_2}
+  \caption{Figures for k-means}\label{fig:kmeans}
+\end{figure}
+
+
 \end{enumerate}
 
 
