@@ -1,0 +1,45 @@
+\section{Semi-supervised learning \hpoints{11}}
+In this exercise, we will use the same data set as in hw2 and hw5 for the task of handwritten digit recognition. Specifically, in this assignment, we will examine how neural net and PCA affect the performance of a model. We will also compare the performance of logistic regression and k-means on those data. 
+
+We will do `semi-supervised learning' -- use a large data set to learn
+dimensionality reduction, and then use the reduced dimension projection (PCA) or nonlinear transformation (auto-encoder) as features in supervised learning.  Note that this will also be `transductive learning' where the features vectors on the test set are also known at training time.
+
+\begin{enumerate}
+\item Train PCA and an auto-encoder on the big data  (12,000 samples) (see {\bf train.mat}, which has X\_train 12,000*784 and Y\_train 12,000 *1). \\
+Please use matlab function {\bf pcacov} on the covariance matrix of X to train coefficients for each principle component. (see {\bf pca\_getpc.m} for details).
+For PCA, choose the number of principle components so as to keep 90\% reconstruction accuracy. How many principle components do we need in this case? Use that many principle components. \\
+For the auto-encoder, the setup to train a model is basically the same as what we did in hw5, except that in this homework we change the hidden layer dimension from 100 to 200 (see {\bf rbm.m} for details). \\ 
+
+Use num of principal components as 50. \\
+
+\item Now we will do logistic regression on 3 different inputs:\\
+\begin{itemize}
+\item The original features
+\item The PCA-ed data
+\item The auto-encoder outputs. To get the new features from auto-encoder, use the trained model in the question above, then plug in the original features into the auto-encoder. \\
+To generate new features from auto-encoder, please use the \textbf{newFeature\_rbm} function in \textbf{hw7\_kit}.
+Also note that after loading X\_train and X\_test, divide them by 255 so that each element in the matrices are less than 1. (See \textbf{test.m} for details)
+\end{itemize}
+You will be doing 10-way logistic regression (labels 1, ..., 9,10) and should use an L0 evaluation of the error (e.g. you get it right or get it wrong).  A useful matlab function for this is {\bf liblinear}\\
+Usage: \\
+for training \textbf{model = train(train\_y, sparse(train\_x),['-s 0','col'])}\\
+for testing  \textbf{[predicted\_lable] = predict(test\_y, sparse(test\_x),['-q','col'])}\\
+(see {\bf logistic.m} for details). \\ 
+Test your model on test data (load test.mat), what's the accuracy? \\
+Compare the performance of the accuracy on test set of the three inputs. What's your observation? \\
+
+Performance accuracy for original data = 0.8943 \\
+Performance accuracy for PCA'ed data = 0.9000 \\
+Performance accuracy for Auto-encoder data = 0.9466 \\
+
+The model with auto-encoder gives out the best data \\
+
+\item Do the same thing using K-means, with k = 10, 25 respectively, but run the code on PCA-ed data and auto-encoder only. Test your model on test.mat, what's the accuracy? \\
+Also, compare the performance of K-means with that of logistic regression. \\
+
+Precision of Auto-encoder data with k-means for 10 and 25 = [0.6666;0.7651] \\
+Precision of principal components with K-means for 10 and 25 = [0.5913;0.7493] \\
+
+Precision of logistic regression is more than precision of kmeans \\
+
+\end{enumerate}
