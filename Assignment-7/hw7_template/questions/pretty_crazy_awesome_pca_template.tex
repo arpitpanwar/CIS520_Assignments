@@ -62,18 +62,15 @@ and it obeys the following four properties:
 \end{align*}
 
 \begin{align*}
-& \; \text{We know that }\\
-P(X) &\; = \sum\limits_k P(X,Y=k) \\
- =&\; \sum \limits_k P(X | Y=k) P(Y=k)   (Using conditional probability)\\   
-=&\; \frac{1}{2} \sum \limits_k P(X | Y=k) \\
-=& \; \frac{1}{2} \left( N(1 , \sigma^2) + N (-1 , \sigma^2) \right) \\
-&\; Using \; X = N (\mu_1 , \sigma_1) \; and \; Y =  N (\mu_2 , \sigma_2) \\
-&\; if \; Z = X + Y = N (\mu_1 +\mu_2 , \sigma_1^2 + \sigma_2^2) \\
-=&\; \frac{1}{2} N (0 , 2 \sigma_2) \\
-&\; \text{We know that } Var[X] = \sigma^2 \\
-Var[c.X] = c^2 Var[X] \\
-&\; So \; Variance= \; \frac{1}{4} Var [X]\\
-=&\; \frac{\sigma^2}{2} \\
+& \;\text{Using law of total variance we have} \\
+Var (X) =&\; \E [Var(X|Y)] + Var[E(X|Y)] \\
+\E [Var (X|Y)]= &\; P (Y=1) Var (X|Y=1) + P(Y=2) Var (X | Y =2) \\
+= &\; \frac{1}{2} \sigma^2 + \frac{1}{2} \sigma^2 = \sigma^2 \\
+\\
+Var (E [X|Y]) =&\; \frac{1}{2} (\E[X | Y = 1])^2 + \frac{1}{2} (\E [X|Y=2])^2 - \left( \frac{1}{2} E[X|Y = 1] + \frac{1}{2} E [X|Y = 2] \right)^2 \\
+=&\; 1\\
+\\
+Var(X) = \sigma^2 +1 \\
 \end{align*}
 
 
@@ -87,14 +84,14 @@ Var[c.X] = c^2 Var[X] \\
   terms of $\sigma^2$.
 
 The variance will remain the same since the feature is uninformative, it will have no impact on the variance \\
-$Var = \frac{\sigma^2}{2}$ \\
+$Var =\sigma^2 + 1$ \\
 
 \item \points{3} Now suppose a data point $X'$ is generated according
   to same process as above, but the feature is uninformative, so the
   mean of class 1 and 2 are both zero.  What is the variance of $X'$?
   Your answer should be in terms of $\sigma^2$.
 
-As we saw in part 1, for uninformative feature, since the mean is 0, the variance will be $\frac{\sigma^2}{2}$ \\
+As we saw in part 1, for uninformative feature, since the mean is 0, the variance will be $\sigma^2 +1$ \\
 
 \item \points{3} Suppose now we generate $X$ as in part 1 and $X'$ as
   in part 2 from a single $Y$. What is the {\em covariance} between
